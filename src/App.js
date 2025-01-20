@@ -1,12 +1,25 @@
 import { useEffect } from 'react';
 import { create } from 'zustand';
 
-const useTestStore = create((set) => ({
-  aaa: '',
-  bbb: '',
-  updateAaa: (value) => set(() => ({ aaa: value })),
-  updateBbb: (value) => set(() => ({ bbb: value })),
-}));
+function logMiddleware(func) {
+  return function (set, get, store) {
+    function newSet(...args) {
+      console.log('调用了 set，新的 state：', get());
+      return set(...args);
+    }
+
+    return func(newSet, get, store);
+  };
+}
+
+const useTestStore = create(
+  logMiddleware((set) => ({
+    aaa: '',
+    bbb: '',
+    updateAaa: (value) => set(() => ({ aaa: value })),
+    updateBbb: (value) => set(() => ({ bbb: value })),
+  }))
+);
 
 export default function App() {
   const updateAaa = useTestStore((state) => state.updateAaa);
