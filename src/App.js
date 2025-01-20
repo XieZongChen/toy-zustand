@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 function logMiddleware(func) {
   return function (set, get, store) {
@@ -13,12 +14,15 @@ function logMiddleware(func) {
 }
 
 const useTestStore = create(
-  logMiddleware((set) => ({
-    aaa: '',
-    bbb: '',
-    updateAaa: (value) => set(() => ({ aaa: value })),
-    updateBbb: (value) => set(() => ({ bbb: value })),
-  }))
+  persist(
+    logMiddleware((set) => ({
+      aaa: '',
+      bbb: '',
+      updateAaa: (value) => set(() => ({ aaa: value })),
+      updateBbb: (value) => set(() => ({ bbb: value })),
+    })),
+    { name: 'testStorage' }
+  )
 );
 
 export default function App() {
