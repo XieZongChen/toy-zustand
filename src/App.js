@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { create } from 'zustand';
 
 const useTestStore = create((set) => ({
@@ -10,6 +11,12 @@ const useTestStore = create((set) => ({
 export default function App() {
   const updateAaa = useTestStore((state) => state.updateAaa);
   const aaa = useTestStore((state) => state.aaa);
+
+  useEffect(() => {
+    useTestStore.subscribe(() => {
+      console.log(useTestStore.getState());
+    });
+  }, []);
 
   return (
     <div>
