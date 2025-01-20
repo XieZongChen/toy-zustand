@@ -1,4 +1,6 @@
-export const createStore = (createState) => {
+import { useEffect, useState } from 'react';
+
+const createStore = (createState) => {
   let state; // 全局状态
   const listeners = new Set(); // 监听器
 
@@ -51,3 +53,21 @@ export const createStore = (createState) => {
 
   return api;
 };
+
+function useStore(api, selector) {
+  const [, forceRender] = useState(0);
+
+  useEffect(() => {
+    api.subscribe((state, prevState) => {
+      const newObj = selector(state);
+      const oldObj = selector(prevState);
+
+      if (newObj !== oldObj) {
+        // 通过 set 一个 state 触发 React 渲染
+        forceRender(Math.random());
+      }
+    });
+  }, []);
+
+  return selector(api.getState());
+}
