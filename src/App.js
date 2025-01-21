@@ -15,6 +15,7 @@ function logMiddleware(func) {
   };
 }
 
+// ts 中的中间件由于要适配类型，写法为 create<State & Action>()(logMiddleware((set) => ({ aaa: '', updateAaa: (value) => set(() => ({ aaa: value })), }))
 const useTestStore = create(
   persist(
     logMiddleware((set) => ({
