@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 // import { create } from 'zustand';
-import { create } from './toy-zustand';
+// import { create } from './toy-zustand';
+import { create } from './toy-zustand2';
 import { persist } from 'zustand/middleware';
 
 function logMiddleware(func) {
