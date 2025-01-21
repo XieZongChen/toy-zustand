@@ -71,3 +71,13 @@ function useStore(api, selector) {
 
   return selector(api.getState());
 }
+
+export const create = (createState) => {
+  const api = createStore(createState);
+
+  const useBoundStore = (selector) => useStore(api, selector);
+
+  Object.assign(useBoundStore, api);
+
+  return useBoundStore;
+};
